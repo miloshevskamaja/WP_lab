@@ -1,0 +1,101 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Event Booking page - Welcome and choose an Event</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Event Booking App</h1>
+</header>
+<main>
+    <h2>Searching event</h2>
+<form th:action="@{/events}" th:method="GET">
+    <label for="searchStr">Searching by name
+        <input id="searchStr" type="text" name="searchingString"></label><br/>
+<!--    <label for="searchRating">Searching by rating-->
+<!--        <input id="searchRating" type="text" name="searchingRating"></label><br/>-->
+
+<!--    <label>Categories:-->
+<!--        <select name="category">-->
+<!--            <option value="" disabled selected>Select a category</option>-->
+<!--            <option th:each="category : ${categories}"-->
+<!--                    th:value="${category.catName}"-->
+<!--                    th:text="${category.catName}">-->
+<!--            </option>-->
+<!--        </select>-->
+
+    </label>
+    <input type="submit" value="Submit" >
+</form>
+
+    <th:block th:if="${hasError}">
+        <div th:text="${error}"></div>
+    </th:block>
+
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <div>
+        <a th:href="@{/events/add-form}">Add new Event</a>
+    </div>
+    </th:block>
+
+
+
+
+    <h2>Choose an event:</h2>
+
+<form th:action="@{/eventBooking}" th:method="POST">
+    <label th:each="event : ${events}">
+            <input type="radio" name="event" th:value="${event.name}"/>
+        <label>Name:
+            <span th:text="${event.name}"></span>
+        </label><br/>
+        <label>Description:
+            <span th:text="${event.description}"></span>
+        </label><br/>
+        <label>Rating:
+            <span th:text="${event.popularityScore}"></span>
+        </label><br/>
+        <label>Category:
+            <span th:text="${event.category.getCatName()}"></span>
+        </label><br/>
+        <label>Location:
+            <span th:text="${event.location.getName()}"></span>
+        </label><br/>
+        <label>Available Tickets:
+            <span th:text="${event.getAvailableTickets()}"></span>
+        </label><br/>
+        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <a th:href="@{'/events/edit/{id}' (id=${event.getId()})}">Edit</a>
+        <a th:href="@{'/events/delete/{id}' (id=${event.getId()})}">Delete</a>
+        </th:block>
+        <br/><br/>
+
+
+        <br/>
+        <br/>
+
+    </label>
+<th:block sec:authorize="hasRole('ROLE_USER')">
+    <h2>Choose number of tickets:</h2>
+    <input type="number" name="numTickets" min="1" max="10"><br/>
+    <br/>
+    <label for="user">Name and Surname: <input type="text" name="user" id="user"></label>
+    <input type="submit" value="Submit">
+</th:block>
+</form>
+
+    <a class="btn btn-light btn-sm ml-3" href="/logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </a>
+
+</main>
+</body>
+</html>

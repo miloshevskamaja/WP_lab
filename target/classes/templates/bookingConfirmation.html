@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Booking - Confirmation</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+        table {
+            width:100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding: 3px 2px;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <header>
+        <h1>Event Booking page - Booking confirmation </h1>
+    </header>
+    <table>
+        <tr>
+            <th colspan="2">
+                Your Booking Status
+            </th>
+        </tr>
+        <tr>
+            <td><b>Attendee Name </b></td>
+            <td><span th:text="${hostName}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Client IP Address</b></td>
+            <td><span th:text="${hostAddress}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Booking for Event</b></td>
+            <td><span th:text="${eventName}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Number of tickets</b></td>
+            <td><span th:text="${numOfTickets}"></span></td>
+        </tr>
+    </table>
+</section>
+<br/>
+
+<h1>Saved Bookings</h1>
+
+<div th:each="savedBooking : ${savedBookings}">
+    <table>
+        <tr>
+            <td>Event name: <th:block th:text="${savedBooking.getEventName()}"></th:block></td>
+        </tr>
+        <tr>
+            <td>Number of tickets: <th:block th:text="${savedBooking.getNumberOfTickets()}"></th:block></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

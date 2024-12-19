@@ -1,0 +1,78 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Event Booking page - Add an Event</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form th:action="@{'/events/add'}" th:method="POST">
+        <input type="hidden" name="id" th:value="${event != null ? event.getId() : ''}">
+        <div>
+            <label for="name">Event name</label>
+            <input type="text" id="name" name="name"
+            th:value="(${event}!=null ? ${event.getName()} : '')"
+            required placeholder="Enter event name">
+        </div>
+        <div>
+            <label for="description">Event description</label>
+            <input type="text" id="description" name="description"
+                   th:value="(${event}!=null ? ${event.getDescription()} : '')"
+                   required placeholder="Enter event description">
+        </div>
+        <div>
+            <label for="popularityScore">Event popularityScore</label>
+            <input type="text" id="popularityScore" name="rating"
+                   th:value="(${event}!=null ? ${event.getPopularityScore()} : '')"
+                   th:attr="readonly=${event !=null ? 'readonly' :null}"
+                   required placeholder="Enter event popularityScore">
+        </div>
+        <div>
+            <label>Locations</label>
+            <select name="location">
+                <option th:if="${event} !=null"
+                th:selected="${event.getLocation() !=null && event.getLocation().getId() == loc.getId()}"
+                        th:each="loc : ${locations}"
+                        th:text="${loc.getName()}"
+                        th:value="${loc.getId()}"></option>
+                <option th:if="${event} ==null"
+                        th:each="loc: ${locations}"
+                        th:text="${loc.getName()}"
+                        th:value="${loc.getId()}"></option>
+            </select>
+        </div>
+        <div>
+            <label>Category</label>
+            <select name="category">
+                <option th:if="${event} !=null"
+                        th:selected="${event.getCategory() !=null && event.getCategory().getId() == category.getId()}"
+                        th:each="category : ${categories}"
+                        th:text="${category.getCatName()}"
+                        th:value="${category.getId()}"></option>
+                <option th:if="${event} ==null"
+                        th:each="category: ${categories}"
+                        th:text="${category.getCatName()}"
+                        th:value="${category.getId()}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="name">Available tickets for this event</label>
+            <input type="text" id="availableTickets" name="availableTickets"
+                   th:value="(${event}!=null ? ${event.getAvailableTickets()} : '')"
+                   required placeholder="Enter event available tickets">
+        </div>
+
+        <button id="submit" type="submit">Save</button>
+        <a type="button" href="/events">Back</a>
+    </form>
+</div>
+
+</body>
+</html>
